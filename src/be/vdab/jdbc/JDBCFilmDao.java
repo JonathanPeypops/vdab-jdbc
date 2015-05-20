@@ -4,23 +4,27 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JDBCFilmDao implements FilmDao{
+public class JDBCFilmDao implements FilmDao {
 
     @Override
     public Film findFilmById(int id) {
         Connection c = createConnection();
         Statement st = null;
         Film film = null;
+
         try {
             st = c.createStatement();
+            ResultSet rs = st.executeQuery("select * from film where film_id = 6");
+            rs.next();
+            film = new Film(rs.getString("title"), rs.getString("release_year"), rs.getInt("film_id"));
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
         try {
-            ResultSet rs = st.executeQuery("select * from film where film_id = 6");
-            rs.next();
-            film = new Film (rs.getString("title"),rs.getString("release_year"),rs.getInt("film_id"));
-
+            if (c != null) {
+                c.close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -32,20 +36,25 @@ public class JDBCFilmDao implements FilmDao{
         Connection c = createConnection();
         Statement st = null;
         List<Film> flist = new ArrayList<>();
+
         try {
             st = c.createStatement();
+            ResultSet rs = st.executeQuery("select * from film");
+            while (rs.next()) {
+                flist.add(new Film(rs.getString("title"), rs.getString("release_year"), rs.getInt("film_id")));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         try {
-            ResultSet rs = st.executeQuery("select * from film");
-           while( rs.next()) {
-               flist.add(new Film(rs.getString("title"), rs.getString("release_year"),rs.getInt("film_id")));
-           }
+            if (c != null) {
+                c.close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return flist;
+
     }
 
     @Override
@@ -57,8 +66,15 @@ public class JDBCFilmDao implements FilmDao{
             ps.setString(1, film.getTitle());
             ps.setString(2, film.getReleaseYear());
             ps.setInt(3, film.getFilm_id());
-            return ps.executeUpdate()== 1;
+            return ps.executeUpdate() == 1;
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (c != null) {
+                c.close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

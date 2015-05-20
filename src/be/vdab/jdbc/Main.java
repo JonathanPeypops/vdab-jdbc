@@ -18,13 +18,14 @@ public class Main {
         // Example usage:
 //        Film film = dao.findFilmById(6);
 //        film.setReleaseYear("2014");
-        Film f = new Film("CAFEBABE", "2015", 6);
-        System.out.println(dao.updateFilm(f));
-        System.out.println(dao.findFilmById(6));
+//        Film f = new Film("CAFEBABE", "2015", 6);
+//        System.out.println(dao.updateFilm(f));
+//        System.out.println(dao.findFilmById(6));
 
 
         // Example usage:
-        // dao.deleteFilm(1508);
+        dao.deleteFilm(6);
+        System.out.println(dao.deleteFilm(6));
         // ... play around with this.
     }
 }

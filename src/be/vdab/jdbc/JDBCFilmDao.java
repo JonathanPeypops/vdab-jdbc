@@ -83,8 +83,27 @@ public class JDBCFilmDao implements FilmDao {
 
     @Override
     public boolean deleteFilm(int id) {
+        Connection c = createConnection();
+
+        try {
+            PreparedStatement ps = c.prepareStatement("delete from film where film_id = ? ");
+            ps.setInt(1, id);
+            ps.execute();
+            return ps.executeUpdate() == 1;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (c != null) {
+                c.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false;
     }
+
 
     private static Connection createConnection() {
         String url = "jdbc:mysql://127.0.0.1:3306/sakila";

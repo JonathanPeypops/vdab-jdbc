@@ -1,5 +1,7 @@
 package be.vdab.jdbc;
 
+import java.util.List;
+
 /**
  * Represents a strategy for managing Films in an underlying store.
  */
